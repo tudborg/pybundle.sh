@@ -1,13 +1,13 @@
 # PyBundle
 
-*Experiment* in building python single-file bundled dependency executables with the `zipapp` module.
+*Experiment* in building python single-file bundled dependency executables with the [`zipapp`][zipapp] module.
 
 
 Place a `__main__.py` in your app directory and call `pybundle.sh bundle <app_dir>` on it.
 See the included example `app`.
 
 
-The included example use [http://click.pocoo.org/](`click`)'s
+The included example use [`click`][http://click.pocoo.org/]'s
 hello-world example to show how dependencies work.
 
 
@@ -41,3 +41,6 @@ Clone the repo and call `./pybundle.sh install app -r app/requirements.txt` to i
 Then call `./bybundle.sh bundle app` to produce an executable `app.pyz` file.
 
 You can now run this file and see the `click` hello world example
+
+[zipapp]: https://docs.python.org/3/library/zipapp.html
+[click]: http://click.pocoo.org/
