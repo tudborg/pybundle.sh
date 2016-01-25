@@ -7,7 +7,7 @@ Place a `__main__.py` in your app directory and call `pybundle.sh bundle <app_di
 See the included example `app`.
 
 
-The included example use [`click`][http://click.pocoo.org/]'s
+The included example use [`click`][click]'s
 hello-world example to show how dependencies work.
 
 
