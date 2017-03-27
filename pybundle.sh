@@ -8,6 +8,7 @@ help () {
     echo "  pybundle.sh bundle  <app_dir> [<executable_name> [<shebang>]]" >&2
     echo "  pybundle.sh install <app_dir> [<pip_arguments>...]" >&2
     echo "  pybundle.sh patchmain <app_dir>" >&2
+    echo "  pybundle.sh run <app_dir>" >&2
 }
 
 patchmain () {
@@ -44,6 +45,16 @@ install () {
     $PY -m pip install --prefix "$app_dir" --no-compile "$@"
 }
 
+run () {
+    [[ $# -gt 0 ]] || ( help && return 1 )
+    local app_dir="$1"
+    shift
+    local tmpexec="$(mktemp /tmp/pybundle.XXXXXX)"
+    trap "rm \"$tmpexec\"" EXIT
+    chmod +x "$tmpexec"
+    bundle "$app_dir" "$tmpexec" && "$tmpexec" "$@"
+}
+
 main () {
     local cmd="$1" && shift
     case "$cmd" in
@@ -51,12 +62,16 @@ main () {
             patchmain "$@"
             exit $?
             ;;
-        bundle)
+        build | bundle)
             bundle "$@"
             exit $?
             ;;
         install)
             install "$@"
+            exit $?
+            ;;
+        run)
+            run "$@"
             exit $?
             ;;
         *)
