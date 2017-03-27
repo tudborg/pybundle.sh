@@ -31,8 +31,23 @@ Usage:
 # patchmain
     Will patch your __main__.py so it loads packages from the directory where `install`
     installs packages to.
+
+# run
+    Will build and run your application directly.
+    Practical for development.
 ```
 
+
+# Python 2
+
+If you are building a python2 application, you want to use python2 to build and run your
+bundle. Note that bybundle.sh use the python 3.5+ `zipapp` module to bundle your application,
+so you still need python3.
+You can build for python2 by setting the `PY` env variable like so:
+
+```
+PY=python2 pybundle.sh install <app_dir> <dep>
+```
 
 # Example
 
