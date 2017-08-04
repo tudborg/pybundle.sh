@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PY=${PY:-'python3'} # for the install command, and will be used as bundle shebang
-ZIPPY=${ZIPPY:-'python3.5'} # python3.5 contains zipapp in stdlib
+ZIPPY=${ZIPPY:-'python3'} # python3 contains zipapp in stdlib
 
 help () {
     echo "Usage:" >&2
-    echo "  pybundle.sh bundle  <app_dir> [<executable_name> [<shebang>]]" >&2
-    echo "  pybundle.sh install <app_dir> [<pip_arguments>...]" >&2
+    echo "  pybundle.sh build     <app_dir> [<executable_name> [<shebang>]]" >&2
+    echo "  pybundle.sh install   <app_dir> [<pip_arguments>...]" >&2
     echo "  pybundle.sh patchmain <app_dir>" >&2
-    echo "  pybundle.sh run <app_dir>" >&2
+    echo "  pybundle.sh run       <app_dir>" >&2
 }
 
 patchmain () {
