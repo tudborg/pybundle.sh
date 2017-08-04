@@ -13,7 +13,7 @@ help () {
 
 patchmain () {
     [[ $# -gt 0 ]] || ( help && return 1 )
-    local app_dir="$1"
+    local app_dir="$(realpath "$1")"
     local main="$app_dir/__main__.py"
     if grep '#---pybundle.sh---' "$main">/dev/null; then
         echo "already patched" >&2
@@ -24,7 +24,7 @@ patchmain () {
 #---pybundle.sh---
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), 'lib', 'python%d.%d' % (sys.version_info.major, sys.version_info.minor), 'site-packages'))
+sys.path.append(os.path.join(os.path.dirname(__file__), 'site-packages'))
 #---end---
 EOF
     echo "$maindata" >> "$main"
@@ -32,7 +32,7 @@ EOF
 
 bundle () {
     [[ $# -gt 0 ]] || ( help && return 1 )
-    local app_dir="$1"
+    local app_dir="$(realpath "$1")"
     local exec_name="${2:-${app_dir}.pyz}"
     local shebang="${3:-"/usr/bin/env $PY"}"
     $ZIPPY -m zipapp --python "$shebang" --output "$exec_name" "$app_dir"
@@ -40,14 +40,16 @@ bundle () {
 
 install () {
     [[ $# -gt 0 ]] || ( help && return 1 )
-    local app_dir="$1"
+    local app_dir="$(realpath "$1")"
     shift
-    $PY -m pip install --prefix "$app_dir" --no-compile "$@"
+    # honestly, I have no idea why this works, but it does on osx
+    # with a homebrew python which is normally broken AF.
+    PYTHONPATH="$app_dir" $PY -m pip install --no-binary all --no-compile --prefix="$app_dir" "$@"
 }
 
 run () {
     [[ $# -gt 0 ]] || ( help && return 1 )
-    local app_dir="$1"
+    local app_dir="$(realpath "$1")"
     shift
     local tmpexec="$(mktemp /tmp/pybundle.XXXXXX)"
     trap "rm \"$tmpexec\"" EXIT
